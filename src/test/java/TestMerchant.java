@@ -2,7 +2,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import sk.mio1987.tools.Merchant;
+import sk.mio1987.app.model.Merchant;
 
 public class TestMerchant {
 

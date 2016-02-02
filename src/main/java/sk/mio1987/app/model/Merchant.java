@@ -2,7 +2,7 @@
  * Represents merchant 
  * @author Michal Bosiak 
  */
-package sk.mio1987.tools;
+package sk.mio1987.app.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
