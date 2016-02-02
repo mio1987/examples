@@ -35,20 +35,45 @@ public class MerchantController {
 				merchantMap.get("address").toString(), Double.parseDouble(merchantMap.get("latitude").toString()),
 				Double.parseDouble(merchantMap.get("longitude").toString()));
 
-		Map<String, Object> response = new LinkedHashMap<String, Object>();
-		response.put("message", "Merchant created successfully");
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("msg", "Merchant created successfully");
 		response.put("merchant", merchantRepository.save(merchant));
 		return response;
 	}
 	
 	/**
-	 * Implementation of GET operation
+	 * Implementation of GET operation for specific ID
 	 * @param merchantId
-	 * @return
+	 * @return merchant by merchantId
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/{merchantId}")
 	public Merchant getMerchantInfo(@PathVariable("merchantId") String merchantId) {
 		return merchantRepository.findOne(merchantId);
-	}	
+	}
+	
+	/**
+	 * Implementation of GET operation without given ID
+	 * @return all merchants
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public Map<String, Object> getAllMerchants(){
+		Iterable<Merchant> merchants = merchantRepository.findAll();
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("merchants", merchants);
+		return response;
+	}
+	
+	/**
+	 * Deletes merchant by merchantId
+	 * @param merchantId
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{merchantId}")
+	public Map<String, Object> deleteMerchant(@PathVariable("merchantId") String merchantId){
+		merchantRepository.delete(merchantId);
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("msg", "Merchant was deleted successfully.");
+		return response;
+	}
 
 }

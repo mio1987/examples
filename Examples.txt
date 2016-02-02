@@ -1,8 +1,13 @@
-POST method:
+POST operation:
 
 curl -H "Content-Type: application/json" -X POST -d "{\"name\":\"Jozko Hruska\",\"description\":\"senior developer\",\"address\":\"Secovce\",\"latitude\":48.7034167,\"longitude\":21.5904493}" http://localhost:8080/merchant
 
-GET method: 
+GET operation: 
 
 e.g.
 http://localhost:8080/merchant/AVKioAkN8IcesShTG2tM
+curl -H "Content-Type: application/json" -X GET "http://localhost:8080/merchant/AVKioAkN8IcesShTG2tM"
+
+DELETE operation:
+
+curl -i -H "Content-Type: application/json" -X DELETE "http://localhost:8080/merchant/AVKioAkN8IcesShTG2tM"
