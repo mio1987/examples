@@ -1,0 +1,8 @@
+POST method:
+
+curl -H "Content-Type: application/json" -X POST -d "{\"name\":\"Jozko Hruska\",\"description\":\"senior developer\",\"address\":\"Secovce\",\"latitude\":48.7034167,\"longitude\":21.5904493}" http://localhost:8080/merchant
+
+GET method: 
+
+e.g.
+http://localhost:8080/merchant/AVKioAkN8IcesShTG2tM

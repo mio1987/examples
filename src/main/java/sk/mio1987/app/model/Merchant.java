@@ -20,6 +20,8 @@ public class Merchant {
 	private double longitude;
 	
 	// constructor
+	public Merchant(){}
+	
 	public Merchant(String name, String description, String address, double latitude, double longitude){
 		this.name = name;
 		this.description = description;
