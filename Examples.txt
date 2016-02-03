@@ -1,13 +1,18 @@
-POST operation:
+Create - POST operation:
 
 curl -H "Content-Type: application/json" -X POST -d "{\"name\":\"Jozko Hruska\",\"description\":\"senior developer\",\"address\":\"Secovce\",\"latitude\":48.7034167,\"longitude\":21.5904493}" http://localhost:8080/merchant
 
-GET operation: 
+Read - GET operation: 
 
 e.g.
 http://localhost:8080/merchant/AVKioAkN8IcesShTG2tM
 curl -H "Content-Type: application/json" -X GET "http://localhost:8080/merchant/AVKioAkN8IcesShTG2tM"
 
-DELETE operation:
+Update - PUT operation:
+
+curl -i -H "Content-Type: application/json" -X PUT -d "{\"name\":\"Jozko Apple\",\"description\":\"senior developer\",\"address\":\"Secovce\",\"latitude\":48.7034167,\"longitude\":21.5904493}" http://localhost:8080/merchant/AVKivEaF0y9XtY4SXq3u
+
+Delete - DELETE operation:
 
 curl -i -H "Content-Type: application/json" -X DELETE "http://localhost:8080/merchant/AVKioAkN8IcesShTG2tM"
+

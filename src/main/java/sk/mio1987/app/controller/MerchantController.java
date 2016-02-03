@@ -22,10 +22,11 @@ import sk.mio1987.app.repository.MerchantRepository;
 public class MerchantController {
 
 	@Autowired
-	private MerchantRepository merchantRepository;	
+	private MerchantRepository merchantRepository;
 
 	/**
 	 * Implementation of POST operation
+	 * 
 	 * @param merchantMap
 	 * @return
 	 */
@@ -40,9 +41,10 @@ public class MerchantController {
 		response.put("merchant", merchantRepository.save(merchant));
 		return response;
 	}
-	
+
 	/**
 	 * Implementation of GET operation for specific ID
+	 * 
 	 * @param merchantId
 	 * @return merchant by merchantId
 	 */
@@ -50,29 +52,51 @@ public class MerchantController {
 	public Merchant getMerchantInfo(@PathVariable("merchantId") String merchantId) {
 		return merchantRepository.findOne(merchantId);
 	}
-	
+
 	/**
 	 * Implementation of GET operation without given ID
+	 * 
 	 * @return all merchants
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public Map<String, Object> getAllMerchants(){
+	public Map<String, Object> getAllMerchants() {
 		Iterable<Merchant> merchants = merchantRepository.findAll();
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("merchants", merchants);
 		return response;
 	}
-	
+
 	/**
-	 * Deletes merchant by merchantId
+	 * Implementation of DELETE merchant by merchantId
+	 * 
 	 * @param merchantId
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{merchantId}")
-	public Map<String, Object> deleteMerchant(@PathVariable("merchantId") String merchantId){
+	public Map<String, Object> deleteMerchant(@PathVariable("merchantId") String merchantId) {
 		merchantRepository.delete(merchantId);
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("msg", "Merchant was deleted successfully.");
+		return response;
+	}
+
+	/**
+	 * Implementation of update merchant by Id by PUT operation
+	 * @param merchantId
+	 * @param merchantMap
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.PUT, value = "/{merchantId}")
+	public Map<String, Object> updateMerchant(@PathVariable("merchantId") String merchantId,
+			@RequestBody Map<String, Object> merchantMap) {
+		Merchant merchant = new Merchant(merchantMap.get("name").toString(), merchantMap.get("description").toString(),
+				merchantMap.get("address").toString(), Double.parseDouble(merchantMap.get("latitude").toString()),
+				Double.parseDouble(merchantMap.get("longitude").toString()));
+		merchant.setId(merchantId);
+
+		Map<String, Object> response = new LinkedHashMap<String, Object>();
+		response.put("msg", "Merchant updated successfully.");
+		response.put("merchant", merchantRepository.save(merchant));
 		return response;
 	}
 
