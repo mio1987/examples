@@ -30,40 +30,96 @@ public class MerchantController {
 
 	@Autowired
 	private MerchantRepository merchantRepository;
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/findByLocationAndDistance/{latitude}/{longitude}/{distance}")
-	public Map<String, Object> searchByLocationAndDistance(@PathVariable("latitude") double latitude, @PathVariable("longitude") double longitude, @PathVariable("distance") double distance){
-				
-		GeoDistanceFilterBuilder filter = FilterBuilders.geoDistanceFilter("location").point(latitude, longitude).distance(distance, DistanceUnit.KILOMETERS);
 
-		SearchQuery searchQuery = new NativeSearchQueryBuilder()
-				.withFilter(filter)
-				.withSort(SortBuilders.geoDistanceSort("location").point(latitude, longitude).order(SortOrder.ASC)).build();
-		
+	/**
+	 * Implementation of searching merchants by given latitude, longitude and
+	 * distance in km from this locations e.g.
+	 * http://localhost:8080/merchant/searchByLocationAndDistance/48.7034167/21.5904493/30
+	 * http://localhost:8080/merchant/searchByLocationAndDistance/latitude/longitude/distance
+	 * 
+	 * @param latitude
+	 *            latitude used in search
+	 * @param longitude
+	 *            longitude used in search
+	 * @param distance
+	 *            in km used to search merchants from the given location
+	 * @return message and merchants found by given criteria
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/searchByLocationAndDistance/{latitude}/{longitude}/{distance}")
+	public Map<String, Object> searchByLocationAndDistance(@PathVariable("latitude") double latitude,
+			@PathVariable("longitude") double longitude, @PathVariable("distance") double distance) {
+
+		GeoDistanceFilterBuilder filter = FilterBuilders.geoDistanceFilter("location").point(latitude, longitude)
+				.distance(distance, DistanceUnit.KILOMETERS);
+
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withFilter(filter)
+				.withSort(SortBuilders.geoDistanceSort("location").point(latitude, longitude).order(SortOrder.ASC))
+				.build();
+
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("msg", "Merchant found");
 		response.put("merchant", merchantRepository.search(searchQuery));
 		return response;
 	}
-	
+
+	/**
+	 * Implementation of fulltext search by name or description of merchant e.g.
+	 * http://localhost:8080/merchant/searchByNameOrDesc/Len
+	 * http://localhost:8080/merchant/searchByNameOrDesc/nameOrDescription
+	 * 
+	 * @param nameOrDesc
+	 *            should be part of name or description of merchant to be
+	 *            searched
+	 * @return message and merchants found by given criteria
+	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/searchByNameOrDesc/{nameOrDesc}")
-	public Map<String, Object> findByNameOrDesc(@PathVariable("nameOrDesc") String nameOrDesc){
+	public Map<String, Object> findByNameOrDesc(@PathVariable("nameOrDesc") String nameOrDesc) {
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("msg", "Search result");
-		response.put("merchantsResult", merchantRepository.findByNameContainingOrDescriptionContaining(nameOrDesc, nameOrDesc));
+		response.put("merchantsResult",
+				merchantRepository.findByNameContainingOrDescriptionContaining(nameOrDesc, nameOrDesc));
 		return response;
-		
+
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/findByName/{nameReq}")
-	public Map<String, Object> search(@PathVariable("nameReq") String nameReq){
-			
+
+	/**
+	 * Implementation of fulltext search by name or description of merchant e.g.
+	 * http://localhost:8080/merchant/searchByNameOrDesc/Len/not
+	 * http://localhost:8080/merchant/searchByNameOrDesc/name/description
+	 * 
+	 * @param name
+	 *            should be part of name of merchant to be searched
+	 * @param description
+	 *            should be part of description of merchant to be searched
+	 * @return message and merchants found by given criteria
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/searchByNameOrDesc/{name}/{desc}")
+	public Map<String, Object> findByNameOrDesc(@PathVariable("name") String name,
+			@PathVariable("desc") String description) {
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("msg", "Search result");
+		response.put("merchantsResult",
+				merchantRepository.findByNameContainingOrDescriptionContaining(name, description));
+		return response;
+
+	}
+
+	/**
+	 * Implementation of searching of merchant by his name e.g.
+	 * http://localhost:8080/merchant/searchByName/Lenovo
+	 * http://localhost:8080/merchant/searchByName/name
+	 * 
+	 * @param nameReq
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/searchByName/{nameReq}")
+	public Map<String, Object> search(@PathVariable("nameReq") String nameReq) {
+
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("msg", "Merchant found");
 		response.put("merchantsResult", merchantRepository.findByName(nameReq));
 		return response;
 	}
-
 
 	/**
 	 * Implementation of POST operation
@@ -123,6 +179,7 @@ public class MerchantController {
 
 	/**
 	 * Implementation of update merchant by Id by PUT operation
+	 * 
 	 * @param merchantId
 	 * @param merchantMap
 	 * @return

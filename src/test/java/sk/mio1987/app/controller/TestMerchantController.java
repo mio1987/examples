@@ -49,8 +49,8 @@ public class TestMerchantController {
 	    
 	    //request body data
 	    Map<String, Object> requestBody = new HashMap<String, Object>();
-	    requestBody.put("name", "CBA");
-	    requestBody.put("description", "fresh food");
+	    requestBody.put("name", "Lenovo");
+	    requestBody.put("description", "laptops");
 	    requestBody.put("address", "Moldavska 10, Kosice");
 	    requestBody.put("latitude", 48.7257854);
 	    requestBody.put("longitude", 21.2353658);
