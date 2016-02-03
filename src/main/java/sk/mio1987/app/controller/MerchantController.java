@@ -7,7 +7,14 @@ package sk.mio1987.app.controller;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.GeoDistanceFilterBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +30,40 @@ public class MerchantController {
 
 	@Autowired
 	private MerchantRepository merchantRepository;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/findByLocationAndDistance/{latitude}/{longitude}/{distance}")
+	public Map<String, Object> searchByLocationAndDistance(@PathVariable("latitude") double latitude, @PathVariable("longitude") double longitude, @PathVariable("distance") double distance){
+				
+		GeoDistanceFilterBuilder filter = FilterBuilders.geoDistanceFilter("location").point(latitude, longitude).distance(distance, DistanceUnit.KILOMETERS);
+
+		SearchQuery searchQuery = new NativeSearchQueryBuilder()
+				.withFilter(filter)
+				.withSort(SortBuilders.geoDistanceSort("location").point(latitude, longitude).order(SortOrder.ASC)).build();
+		
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("msg", "Merchant found");
+		response.put("merchant", merchantRepository.search(searchQuery));
+		return response;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/searchByNameOrDesc/{nameOrDesc}")
+	public Map<String, Object> findByNameOrDesc(@PathVariable("nameOrDesc") String nameOrDesc){
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("msg", "Search result");
+		response.put("merchantsResult", merchantRepository.findByNameContainingOrDescriptionContaining(nameOrDesc, nameOrDesc));
+		return response;
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/findByName/{nameReq}")
+	public Map<String, Object> search(@PathVariable("nameReq") String nameReq){
+			
+		Map<String, Object> response = new LinkedHashMap<>();
+		response.put("msg", "Merchant found");
+		response.put("merchantsResult", merchantRepository.findByName(nameReq));
+		return response;
+	}
+
 
 	/**
 	 * Implementation of POST operation

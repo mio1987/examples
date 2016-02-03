@@ -1,6 +1,7 @@
 Create - POST operation:
 
 curl -H "Content-Type: application/json" -X POST -d "{\"name\":\"Jozko Hruska\",\"description\":\"senior developer\",\"address\":\"Secovce\",\"latitude\":48.7034167,\"longitude\":21.5904493}" http://localhost:8080/merchant
+curl -H "Content-Type: application/json" -X POST -d "{\"name\":\"Bana\",\"description\":\"wood\",\"address\":\"Kosice\",\"latitude\":48.727319,\"longitude\":21.202151}" http://localhost:8080/merchant
 
 Read - GET operation: 
 
