@@ -17,3 +17,7 @@ Delete - DELETE operation:
 
 curl -i -H "Content-Type: application/json" -X DELETE "http://localhost:8080/merchant/AVKioAkN8IcesShTG2tM"
 
+Search by latitude, longitude and distance 
+
+curl -i -H "Content-Type: application/json" -X GET "localhost:8080/merchant/searchByLocationAndDistance/48.7034167/21.5904493/20"
+
