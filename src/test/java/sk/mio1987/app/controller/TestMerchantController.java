@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -76,8 +77,8 @@ public class TestMerchantController {
 	    
 	    //Fetching Merchant also from ES repostitory
 	    Merchant merchantFromEs = merchantRepository.findOne(merchantId);
-	    assertEquals("CBA", merchantFromEs.getName());
-	    assertEquals("fresh food", merchantFromEs.getDescription());
+	    assertEquals("Lenovo", merchantFromEs.getName());
+	    assertEquals("laptops", merchantFromEs.getDescription());
 	    assertEquals("Moldavska 10, Kosice", merchantFromEs.getAddress());
 	    assertEquals(48.7257854, merchantFromEs.getLatitude(), DELTA);
 	    assertEquals(21.2353658, merchantFromEs.getLongitude(), DELTA);
@@ -85,6 +86,25 @@ public class TestMerchantController {
 	    //Delete the data added for testing
 	    merchantRepository.delete(merchantId);
 
+	  }  
+	  
+	  @Test
+	  public void testSearchByName() throws JsonProcessingException{
+		  	Merchant tMerchant2 = new Merchant("Apple", "macbooks, iphones, ipads", "Secovce", 48.7034167, 21.5904493);
+		  	merchantRepository.save(tMerchant2);
+		  			  			  
+		  	//Invoking the API
+		    Map<String, Object> apiResponse = 
+		        restTemplate.getForObject("http://localhost:8080/merchant/searchByName/" + tMerchant2.getName(), Map.class);
+		    
+		    List<Map<String, Object>> merchants = (List<Map<String, Object>>)apiResponse.get("merchantsResult");
+		    
+		    assertEquals(1, merchants.size());
+		    assertEquals("Apple", merchants.get(0).get("name"));
+		    
+		    		    
+		    //Delete the data added for testing
+		    merchantRepository.delete(tMerchant2.getId());
 	  }
 
 }

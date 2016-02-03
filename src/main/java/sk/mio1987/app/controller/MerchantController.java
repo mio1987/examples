@@ -73,7 +73,7 @@ public class MerchantController {
 	 * @return message and merchants found by given criteria
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/searchByNameOrDesc/{nameOrDesc}")
-	public Map<String, Object> findByNameOrDesc(@PathVariable("nameOrDesc") String nameOrDesc) {
+	public Map<String, Object> searchByNameOrDesc(@PathVariable("nameOrDesc") String nameOrDesc) {
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("msg", "Search result");
 		response.put("merchantsResult",
@@ -94,7 +94,7 @@ public class MerchantController {
 	 * @return message and merchants found by given criteria
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/searchByNameOrDesc/{name}/{desc}")
-	public Map<String, Object> findByNameOrDesc(@PathVariable("name") String name,
+	public Map<String, Object> searchByNameOrDesc(@PathVariable("name") String name,
 			@PathVariable("desc") String description) {
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("msg", "Search result");
@@ -113,7 +113,7 @@ public class MerchantController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/searchByName/{nameReq}")
-	public Map<String, Object> search(@PathVariable("nameReq") String nameReq) {
+	public Map<String, Object> searchByName(@PathVariable("nameReq") String nameReq) {
 
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("msg", "Merchant found");
